@@ -1,0 +1,48 @@
+body {
+    background-color: #f8f9fa;
+}
+.navbar-brand {
+    font-weight: bold;
+    color: #007bff !important;
+}
+.card {
+    border-radius: 10px;
+    transition: transform 0.2s;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+.table th {
+    background-color: #007bff;
+    color: white;
+}
+.alert {
+    border-radius: 8px;
+}
+.btn-primary {
+    transition: background-color 0.3s;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+.list-group-item {
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.modal-content {
+    border-radius: 10px;
+}
+.hero-section {
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+}
+.card {
+    border-radius: 10px;
+    transition: transform 0.2s;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
