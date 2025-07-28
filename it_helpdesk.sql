@@ -75,3 +75,107 @@ VALUES (
         'senior_officer',
         1
     );
+ALTER TABLE users
+ADD COLUMN profile_picture VARCHAR(255) DEFAULT NULL;
+ALTER TABLE users
+ADD COLUMN avatar_path VARCHAR(255) DEFAULT 'assets/default_avatar.png';
+-- Optional: If you want to set existing users to a default avatar path
+UPDATE users
+SET avatar_path = 'assets/default_avatar.png'
+WHERE avatar_path IS NULL
+    OR avatar_path = '';
+CREATE TABLE IF NOT EXISTS users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'senior_officer', 'submitter') NOT NULL,
+    team_id INT NULL,
+    -- For senior officers
+    avatar_path VARCHAR(255) DEFAULT 'assets/default_avatar.png',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS teams (
+    team_id INT AUTO_INCREMENT PRIMARY KEY,
+    team_name VARCHAR(255) NOT NULL UNIQUE
+);
+CREATE TABLE IF NOT EXISTS tickets (
+    ticket_id INT AUTO_INCREMENT PRIMARY KEY,
+    submitter_id INT NOT NULL,
+    issue_type VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    priority ENUM('Low', 'Medium', 'High') NOT NULL DEFAULT 'Medium',
+    status ENUM('Open', 'In Progress', 'Closed') NOT NULL DEFAULT 'Open',
+    assigned_officer_id INT NULL,
+    team_id INT NULL,
+    -- Added to track team assignment
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (submitter_id) REFERENCES users(user_id),
+    FOREIGN KEY (assigned_officer_id) REFERENCES users(user_id),
+    FOREIGN KEY (team_id) REFERENCES teams(team_id)
+);
+CREATE TABLE IF NOT EXISTS ticket_comments (
+    comment_id INT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id INT NOT NULL,
+    user_id INT NOT NULL,
+    comment_text TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+CREATE TABLE IF NOT EXISTS ticket_status_history (
+    history_id INT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id INT NOT NULL,
+    user_id INT NOT NULL,
+    old_status ENUM('Open', 'In Progress', 'Closed') NULL,
+    new_status ENUM('Open', 'In Progress', 'Closed') NOT NULL,
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+CREATE TABLE status_history (
+    history_id INT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id INT NOT NULL,
+    user_id INT NOT NULL,
+    -- User who made the status change
+    old_status VARCHAR(50) NOT NULL,
+    new_status VARCHAR(50) NOT NULL,
+    changed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE priority_history (
+    priority_history_id INT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id INT NOT NULL,
+    user_id INT NOT NULL,
+    old_priority ENUM('Low', 'Medium', 'High') NOT NULL,
+    new_priority ENUM('Low', 'Medium', 'High') NOT NULL,
+    changed_at DATETIME NOT NULL,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE team_history (
+    team_history_id INT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id INT NOT NULL,
+    user_id INT NOT NULL,
+    old_team_id INT,
+    new_team_id INT,
+    is_escalation BOOLEAN NOT NULL DEFAULT 0,
+    changed_at DATETIME NOT NULL,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (old_team_id) REFERENCES teams(team_id),
+    FOREIGN KEY (new_team_id) REFERENCES teams(team_id)
+);
+
+CREATE TABLE attachments (
+    attachment_id INT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id INT NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    uploaded_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id)
+);

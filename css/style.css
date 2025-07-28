@@ -1,48 +1,244 @@
+/* General Body Styles */
 body {
-    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Light theme default */
+    color: #212529; /* Light theme default text */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+
+    /* REMOVED: background-image related properties to fix the large image issue */
 }
-.navbar-brand {
-    font-weight: bold;
-    color: #007bff !important;
+
+/* Dark Theme Specific Styles */
+html.dark-theme body { /* Target body when html has dark-theme class */
+    background-color: #343a40; /* Dark theme background */
+    color: #f8f9fa; /* Dark theme text */
 }
-.card {
-    border-radius: 10px;
-    transition: transform 0.2s;
+
+html.dark-theme .navbar {
+    background-color: #212529 !important; /* Darker navbar */
+    border-bottom: 1px solid #444;
 }
-.card:hover {
-    transform: translateY(-5px);
+
+html.dark-theme .navbar-nav .nav-link {
+    color: #f8f9fa !important;
 }
-.table th {
-    background-color: #007bff;
-    color: white;
+
+html.dark-theme .navbar-nav .nav-link.active {
+    color: #0d6efd !important; /* Adjust active link color for dark theme if needed */
 }
-.alert {
-    border-radius: 8px;
+
+html.dark-theme .card {
+    background-color: #495057; /* Darker card background */
+    color: #f8f9fa;
+    border-color: #6c757d;
 }
-.btn-primary {
-    transition: background-color 0.3s;
+
+html.dark-theme .table {
+    color: #f8f9fa; /* Table text color */
 }
-.btn-primary:hover {
-    background-color: #0056b3;
+
+html.dark-theme .table thead {
+    background-color: #212529;
+    color: #f8f9fa;
 }
-.list-group-item {
-    border-radius: 8px;
-    margin-bottom: 10px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+html.dark-theme .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #5a6268; /* Alternate row background */
 }
-.modal-content {
-    border-radius: 10px;
+
+html.dark-theme .table-hover tbody tr:hover {
+    background-color: #6c757d; /* Hover background */
 }
-.hero-section {
-    min-height: 400px;
-    display: flex;
-    align-items: center;
+
+html.dark-theme .form-control,
+html.dark-theme .form-select,
+html.dark-theme .form-check-input {
+    background-color: #6c757d;
+    color: #f8f9fa;
+    border-color: #888;
 }
-.card {
-    border-radius: 10px;
-    transition: transform 0.2s;
+
+html.dark-theme .form-control::placeholder {
+    color: #ccc;
 }
-.card:hover {
-    transform: translateY(-5px);
+
+html.dark-theme .form-control:focus,
+html.dark-theme .form-select:focus {
+    background-color: #7a8288;
+    color: #f8f9fa;
+    border-color: #999;
+    box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.25); /* Adjusted shadow */
+}
+
+html.dark-theme .btn-light {
+    background-color: #6c757d;
+    color: #f8f9fa;
+    border-color: #6c757d;
+}
+
+html.dark-theme .btn-light:hover {
+    background-color: #5a6268;
+    border-color: #5a6268;
+}
+
+html.dark-theme .list-group-item {
+    background-color: #495057;
+    color: #f8f9fa;
+    border-color: #6c757d;
+}
+
+html.dark-theme .dropdown-menu {
+    background-color: #495057;
+    border-color: #6c757d;
+}
+
+html.dark-theme .dropdown-item {
+    color: #f8f9fa;
+}
+
+html.dark-theme .dropdown-item:hover,
+html.dark-theme .dropdown-item:focus {
+    background-color: #6c757d;
+    color: #f8f9fa;
+}
+
+html.dark-theme .alert-info {
+    background-color: #31708f; /* Adjusted dark info */
+    color: #fff;
+    border-color: #31708f;
+}
+
+html.dark-theme .alert-danger {
+    background-color: #a94442; /* Adjusted dark danger */
+    color: #fff;
+    border-color: #a94442;
+}
+
+html.dark-theme .alert-success {
+    background-color: #3c763d; /* Adjusted dark success */
+    color: #fff;
+    border-color: #3c763d;
+}
+
+/* Specific elements that might need dark theme adjustments */
+.navbar-brand img {
+    height: 40px;
+    width: auto; /* Maintain aspect ratio */
+    max-height: 40px; /* Ensure it doesn't exceed 40px height */
+    max-width: 100%; /* Ensure it doesn't exceed its container width */
+    display: inline-block; /* Make sure it behaves nicely in layout */
+    object-fit: contain; /* Prevents distortion, scales to fit */
+}
+
+
+/* Avatar styling */
+.navbar-nav .nav-item .nav-link.avatar-link {
+    padding: 0.5rem 0.5rem; /* Adjust padding around avatar */
+}
+
+.avatar-icon {
+    width: 35px; /* Adjust avatar size */
+    height: 35px;
+    border-radius: 50%; /* Make it circular */
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Light border */
+}
+
+html.dark-theme .avatar-icon {
+    border: 1px solid rgba(0, 0, 0, 0.3); /* Dark theme border */
+}
+
+/* Dropdown menu positioning for nested dropdowns */
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    border-radius: .25rem;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu > a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+html.dark-theme .dropdown-submenu > a:after {
+    border-left-color: #f8f9fa;
+}
+
+/* Adjustments for right-to-left languages (like Arabic) */
+html[dir="rtl"] body {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .navbar-brand {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+html[dir="rtl"] .navbar-nav {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+html[dir="rtl"] .navbar-collapse {
+    text-align: right;
+}
+
+html[dir="rtl"] .dropdown-menu-end {
+    right: auto !important;
+    left: 0 !important;
+}
+
+html[dir="rtl"] .dropdown-submenu > .dropdown-menu {
+    left: auto;
+    right: 100%;
+    margin-left: 0;
+    margin-right: -1px;
+}
+
+html[dir="rtl"] .dropdown-submenu > a:after {
+    float: left;
+    border-width: 5px 5px 5px 0;
+    border-right-color: #ccc;
+    border-left-color: transparent;
+    margin-right: 0;
+    margin-left: -10px;
+}
+
+html[dir="rtl"] html.dark-theme .dropdown-submenu > a:after {
+    border-right-color: #f8f9fa;
+}
+
+/* Ensure padding for content below fixed header */
+body {
+    padding-top: 56px; /* Height of default Bootstrap navbar */
+}
+
+
+
+.minibar {
+    border-right: 3px dashed #ddd;
+}
+
+.minibar-btn {
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
 }

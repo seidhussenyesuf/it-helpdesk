@@ -2,15 +2,15 @@
 require_once 'config.php'; // Include config for isLoggedIn() and isSeniorOfficer()
 
 // Helper function for redirection (same as in other files)
-function redirect($page, $params = [])
-{
-    $url = $page;
-    if (!empty($params)) {
-        $url .= '?' . http_build_query($params);
-    }
-    header("Location: " . $url);
-    exit();
-}
+// function redirect($page, $params = [])
+// {
+//     $url = $page;
+//     if (!empty($params)) {
+//         $url .= '?' . http_build_query($params);
+//     }
+//     header("Location: " . $url);
+//     exit();
+// }
 
 // Function to display messages (same as in other files)
 function displayMessage()
